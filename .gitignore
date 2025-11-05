@@ -62,3 +62,6 @@ application-*.yml
 ### Other ###
 *.class
 *.tmp
+
+### script ###
+*.sh
