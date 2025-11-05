@@ -49,9 +49,7 @@ logs/
 *.log
 
 ### Spring Boot ###
-application-local.properties
-application-dev.properties
-application-test.properties
+application.properties
 application.yml
 application-*.yml
 
@@ -64,3 +62,6 @@ application-*.yml
 ### Other ###
 *.class
 *.tmp
+
+### script ###
+*.sh
