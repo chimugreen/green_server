@@ -22,8 +22,8 @@ public class Todo {
 
     private LocalDateTime targetDate; //언제까지 완료해야되는지
 
-    @ManyToOne
-    @JoinColumn(name = "writer_Id")
+    @ManyToOne(fetch = FetchType.EAGER) //
+    @JoinColumn(name = "writer_id", nullable = false)
     private User writer; //작성자
 
 }
