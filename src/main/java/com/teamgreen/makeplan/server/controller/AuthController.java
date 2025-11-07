@@ -39,8 +39,8 @@ public class AuthController {
      * 로그인 메서드
      * @return accessToken
      */
-    @PostMapping("/login")
-    public SignInResDto login(@Valid @RequestBody SignInReqDto dto) {
+    @PostMapping("/signin")
+    public SignInResDto signIn(@Valid @RequestBody SignInReqDto dto) {
         String accessToken = userService.login(dto.getEmail(), dto.getPassword());
         return new SignInResDto(accessToken);
     }
