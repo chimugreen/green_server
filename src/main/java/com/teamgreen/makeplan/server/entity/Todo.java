@@ -22,7 +22,7 @@ public class Todo {
 
     private LocalDateTime targetDate; //언제까지 완료해야되는지
 
-    @ManyToOne(fetch = FetchType.EAGER) //
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST) // todo조회시 user도 함께 가져옴, todo저장시 user도 같이 저장
     @JoinColumn(name = "writer_id", nullable = false)
     private User writer; //작성자
 
