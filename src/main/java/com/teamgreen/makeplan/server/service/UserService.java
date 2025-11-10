@@ -3,6 +3,8 @@ package com.teamgreen.makeplan.server.service;
 import com.teamgreen.makeplan.server.auth.JwtTokenProvider;
 import com.teamgreen.makeplan.server.auth.TokenStore;
 import com.teamgreen.makeplan.server.entity.User;
+import com.teamgreen.makeplan.server.error.AuthError;
+import com.teamgreen.makeplan.server.error.RestApiException;
 import com.teamgreen.makeplan.server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +23,7 @@ public class UserService {
 
         // 중복 확인
         if (userRepository.existsByEmail(user.getEmail())) {
-            throw new IllegalArgumentException("이미 사용중인 이메일입니다.");
+            throw new RestApiException(AuthError.DUPLICATE_EMAIL);
         }
 
         return this.userRepository.save(user);
@@ -31,11 +33,14 @@ public class UserService {
     public String login(String email, String password) {
 
         User savedUser = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이메일입니다."));
+                .orElseThrow(() -> new RestApiException(AuthError.INVALID_USER_INFO));
+
+        System.out.println("savedUser = " + savedUser);
 
         if (!savedUser.getPassword().equals(password)) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new RestApiException(AuthError.INVALID_USER_INFO);
         }
+
         String token = jwtTokenProvider.buildJwtToken(email);
         tokenStore.save(savedUser.getEmail(), token);
         return token;

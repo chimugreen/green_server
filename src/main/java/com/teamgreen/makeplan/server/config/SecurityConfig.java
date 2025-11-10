@@ -1,5 +1,6 @@
 package com.teamgreen.makeplan.server.config;
 
+import com.teamgreen.makeplan.server.auth.JwtAuthenticationEntryPoint;
 import com.teamgreen.makeplan.server.auth.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtFilter;
+    private final JwtAuthenticationEntryPoint entryPoint;
 
     /**
      * Password encoder password encoder.
@@ -34,8 +36,9 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth.requestMatchers("/auth/signup", "/auth/login")
+            .authorizeHttpRequests(auth -> auth.requestMatchers("/auth/signup", "/auth/signin")
                                                .permitAll())
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(entryPoint))
             .formLogin(login -> login.disable())
             .httpBasic(basic -> basic.disable())
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
