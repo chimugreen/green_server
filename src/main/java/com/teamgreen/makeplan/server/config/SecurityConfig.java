@@ -37,8 +37,16 @@ public class SecurityConfig {
 
         http.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth.requestMatchers("/auth/signup", "/auth/signin")
-                                               .permitAll())
-                .exceptionHandling(ex -> ex.authenticationEntryPoint(entryPoint))
+                                               .permitAll()
+                                               .requestMatchers(                    "/v3/api-docs/**",
+                                                                                    "/swagger-ui/**",
+                                                                                    "/swagger-ui.html",
+                                                                                    "/swagger-resources/**",
+                                                                                    "/webjars/**")
+                                               .permitAll()
+
+            )
+            .exceptionHandling(ex -> ex.authenticationEntryPoint(entryPoint))
             .formLogin(login -> login.disable())
             .httpBasic(basic -> basic.disable())
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
