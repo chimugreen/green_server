@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -20,38 +19,30 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtFilter;
     private final JwtAuthenticationEntryPoint entryPoint;
 
-    /**
-     * Password encoder password encoder.
-     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-
-    /**
-     * Spring Security 설정
-     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
         http
-                .cors(cors -> {})
+                .cors(cors -> cors.disable())
                 .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth.requestMatchers("/auth/signup", "/auth/signin")
-                                               .permitAll()
-                                               .requestMatchers(                    "/v3/api-docs/**",
-                                                                                    "/swagger-ui/**",
-                                                                                    "/swagger-ui.html",
-                                                                                    "/swagger-resources/**",
-                                                                                    "/webjars/**")
-                                               .permitAll()
-
-            )
-            .exceptionHandling(ex -> ex.authenticationEntryPoint(entryPoint))
-            .formLogin(login -> login.disable())
-            .httpBasic(basic -> basic.disable())
-            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(entryPoint))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/auth/signup", "/auth/signin",
+                                         "/v3/api-docs/**",
+                                         "/swagger-ui/**",
+                                         "/swagger-ui.html",
+                                         "/swagger-resources/**",
+                                         "/webjars/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .formLogin(login -> login.disable())
+                .httpBasic(basic -> basic.disable())
+                // JWT 필터를 익명 사용자 처리 이전에 추가
+                .addFilterBefore(jwtFilter, org.springframework.security.web.authentication.AnonymousAuthenticationFilter.class);
 
         return http.build();
     }
