@@ -3,6 +3,7 @@ package com.teamgreen.makeplan.server.service;
 import com.teamgreen.makeplan.server.auth.JwtTokenProvider;
 import com.teamgreen.makeplan.server.auth.TokenStore;
 import com.teamgreen.makeplan.server.dto.user.UserProfileResDto;
+import com.teamgreen.makeplan.server.dto.user.follow.FollowUserDto;
 import com.teamgreen.makeplan.server.entity.User;
 import com.teamgreen.makeplan.server.entity.document.user.UserDocument;
 import com.teamgreen.makeplan.server.error.AuthError;
@@ -13,6 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -96,6 +100,38 @@ public class UserService {
 
         userDocumentRepository.save(requester);
         userDocumentRepository.save(target);
+    }
+
+    public List<FollowUserDto> followers(Integer userId) {
+        List<FollowUserDto> list = new ArrayList<>();
+
+        getUserDocument(userId).getFollowers()
+                               .forEach(id -> {
+                                   User userFromSql = getUserFromSql(id);
+                                   list.add(new FollowUserDto(
+                                           id,
+                                           userFromSql.getName(),
+                                           userFromSql.getProfileImageUrl()
+                                   ));
+                               });
+
+        return list;
+    }
+
+    public List<FollowUserDto> followings(Integer userId) {
+        List<FollowUserDto> list = new ArrayList<>();
+
+        getUserDocument(userId).getFollowing()
+                               .forEach(id -> {
+                                   User userFromSql = getUserFromSql(id);
+                                   list.add(new FollowUserDto(
+                                           id,
+                                           userFromSql.getName(),
+                                           userFromSql.getProfileImageUrl()
+                                   ));
+                               });
+
+        return list;
     }
 
     /**

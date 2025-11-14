@@ -1,4 +1,4 @@
-package com.teamgreen.makeplan.server.dto.user;
+package com.teamgreen.makeplan.server.dto.user.follow;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

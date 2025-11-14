@@ -2,14 +2,18 @@ package com.teamgreen.makeplan.server.controller;
 
 import com.teamgreen.makeplan.server.auth.UserPrincipal;
 import com.teamgreen.makeplan.server.base.BaseController;
-import com.teamgreen.makeplan.server.dto.user.FollowReqDto;
-import com.teamgreen.makeplan.server.dto.user.UnfollowReqDto;
+import com.teamgreen.makeplan.server.dto.user.follow.FollowListResDto;
+import com.teamgreen.makeplan.server.dto.user.follow.FollowReqDto;
+import com.teamgreen.makeplan.server.dto.user.follow.FollowUserDto;
+import com.teamgreen.makeplan.server.dto.user.follow.UnfollowReqDto;
 
 import com.teamgreen.makeplan.server.dto.user.UserProfileResDto;
 import com.teamgreen.makeplan.server.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -38,5 +42,20 @@ public class UserController extends BaseController {
         UserPrincipal currentUser = getCurrentUser();
 
         userService.unfollow(currentUser.getUserId(), dto.getUserId());
+    }
+
+    @GetMapping("/followers/{userId}")
+    public FollowListResDto followers(@PathVariable Integer userId) {
+        return FollowListResDto.builder()
+                               .list(userService.followers(userId))
+                               .build();
+    }
+
+    @GetMapping("/followings/{userId}")
+    public FollowListResDto followings(@PathVariable Integer userId) {
+        return FollowListResDto
+                .builder()
+                .list(userService.followings(userId))
+                .build();
     }
 }
