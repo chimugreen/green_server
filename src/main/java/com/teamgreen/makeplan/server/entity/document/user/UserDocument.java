@@ -1,4 +1,4 @@
-package com.teamgreen.makeplan.server.entity.user;
+package com.teamgreen.makeplan.server.entity.document.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +19,8 @@ public class UserDocument {
     @Id
     private String mongoId; // Mongo의 내부 id
     private Integer id; //Rdb의 userID
+    @Builder.Default
     private List<Integer> followers = new ArrayList<>();
+    @Builder.Default
     private List<Integer> following = new ArrayList<>();
 }

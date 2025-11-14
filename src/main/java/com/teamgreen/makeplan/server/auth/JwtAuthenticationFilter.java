@@ -38,10 +38,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = header.substring(7);
 
         if (jwtTokenProvider.validateToken(token)) {
+
             String email = jwtTokenProvider.extractEmail(token);
-            // 인증 정보 객체를 생성(email이라는 사용자가 인증된 요청이다)
-            UsernamePasswordAuthenticationToken auth =
-                    new UsernamePasswordAuthenticationToken(email, null, Collections.emptyList());
+            Integer userId = jwtTokenProvider.extractUserId(token);
+
+            UserPrincipal principal = UserPrincipal.builder()
+                                                   .email(email)
+                                                   .userId(userId)
+                                                   .build();
+
+            // 인증 정보 객체를 생성(UserPrincipal이라는 사용자가 인증된 요청이다)
+            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+                    principal,
+                    null,
+                    Collections.emptyList()
+            );
 
             // 사용자의 요청에 대한 추가 정보(IP, 세션, ID등을 추가하는 과정 으로 보안로그를 남길 때나 세션/요청 기반 감사 기능에 사용 예) 어느 IP에서 접근, 어느
             // 세션으로 접근 이런 메타데이터를 활용해 추후에 로그를 남기거나 할 수 있음 이 메타데이터는 Authentication.getDetails에 저장됨.

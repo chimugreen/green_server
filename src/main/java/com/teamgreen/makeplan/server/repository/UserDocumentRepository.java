@@ -1,6 +1,6 @@
 package com.teamgreen.makeplan.server.repository;
 
-import com.teamgreen.makeplan.server.entity.user.UserDocument;
+import com.teamgreen.makeplan.server.entity.document.user.UserDocument;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;

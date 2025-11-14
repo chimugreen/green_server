@@ -1,6 +1,6 @@
 package com.teamgreen.makeplan.server.repository;
 
-import com.teamgreen.makeplan.server.entity.user.UserDocument;
+import com.teamgreen.makeplan.server.entity.document.user.UserDocument;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

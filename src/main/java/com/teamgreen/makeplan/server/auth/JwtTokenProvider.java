@@ -18,12 +18,13 @@ public class JwtTokenProvider {
     private static final long ACCESS_TOKEN_VALIDITY = 1000L * 60 * 30;
 
 
-    public String buildJwtToken(String email) {
+    public String buildJwtToken(Integer userId, String email) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + ACCESS_TOKEN_VALIDITY);
 
         return Jwts.builder()
                    .setSubject(email)
+                   .claim("userId", userId)
                    .setIssuedAt(now)
                    .setExpiration(expiryDate)
                    .signWith(key, SignatureAlgorithm.HS256)
@@ -51,4 +52,12 @@ public class JwtTokenProvider {
                    .getSubject();
     }
 
+    public Integer extractUserId(String token) {
+        return Jwts.parserBuilder()
+                   .setSigningKey(key)
+                   .build()
+                   .parseClaimsJws(token)
+                   .getBody()
+                   .get("userId", Integer.class);
+    }
 }
