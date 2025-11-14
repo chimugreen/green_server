@@ -1,30 +1,42 @@
 package com.teamgreen.makeplan.server.controller;
 
+import com.teamgreen.makeplan.server.auth.UserPrincipal;
+import com.teamgreen.makeplan.server.base.BaseController;
 import com.teamgreen.makeplan.server.dto.user.FollowReqDto;
+import com.teamgreen.makeplan.server.dto.user.UnfollowReqDto;
+
+import com.teamgreen.makeplan.server.dto.user.UserProfileResDto;
+import com.teamgreen.makeplan.server.service.UserService;
 import jakarta.validation.Valid;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
-public class UserController {
+@RequiredArgsConstructor
+public class UserController extends BaseController {
+
+    private final UserService userService;
+
+    @GetMapping("/{userId}")
+    public UserProfileResDto getUserProfile(@PathVariable Integer userId) {
+        UserPrincipal currentUser = getCurrentUser();
+        return
+        userService.getProfile(currentUser.getUserId(), userId);
+    }
 
     @PostMapping("/follow")
     public void followUser(@Valid @RequestBody FollowReqDto dto) {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserPrincipal currentUser = getCurrentUser();
 
-        // JwtAuthenticationFilter에서 넣어준 email
-        String email = (String) authentication.getPrincipal();
+        userService.follow(currentUser.getUserId(), dto.getUserId());
+    }
 
-        System.out.println("\"현재 로그인한 사용자: \" + email = " + "현재 로그인한 사용자: " + email);
+    @PostMapping("/unfollow")
+    public void unfollowUser(@Valid @RequestBody UnfollowReqDto dto) {
+        UserPrincipal currentUser = getCurrentUser();
 
-        System.out.println("dto = " + dto);
-
-        return;
+        userService.unfollow(currentUser.getUserId(), dto.getUserId());
     }
 }
