@@ -4,6 +4,8 @@ import com.teamgreen.makeplan.server.auth.JwtTokenProvider;
 import com.teamgreen.makeplan.server.auth.TokenStore;
 import com.teamgreen.makeplan.server.dto.todo.TodoReqDto;
 import com.teamgreen.makeplan.server.dto.todo.CreateTodoResDto;
+import com.teamgreen.makeplan.server.entity.User;
+import com.teamgreen.makeplan.server.repository.UserRepository;
 import com.teamgreen.makeplan.server.service.TodoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +26,6 @@ public class TodoController {
         public CreateTodoResDto createTodo(@RequestBody TodoReqDto todoReqDto, @RequestHeader("Authorization") String authorizationHeader) {
 
 //                String accessToken = authorizationHeader.replace("Bearer ", "").trim();
-//
 //                String email = tokenStore.getEmailByToken(accessToken);
 
                 String token = authorizationHeader.replace("Bearer ","").trim();

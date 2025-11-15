@@ -1,6 +1,7 @@
 package com.teamgreen.makeplan.server.service;
 
 import com.teamgreen.makeplan.server.dto.todo.CreateTodoResDto;
+import com.teamgreen.makeplan.server.dto.todo.TodoReqDto;
 import com.teamgreen.makeplan.server.entity.Todo;
 import com.teamgreen.makeplan.server.entity.User;
 import com.teamgreen.makeplan.server.repository.TodoRepository;
@@ -46,23 +47,32 @@ public class TodoService {
                 .toList();
     }
 
-//
-//    //Todo 수정
-//    public CreateTodoResDto updateTodo(Integer id , String email, UpdateTodoReqDto dto){
-//        User user = userRepository.findByEmail(email)
-//                .orElseThrow(() -> new RuntimeException("해당 유저가 없습니다."));
-//        Todo todo = todoRepository.findById(id)
-//                .orElseThrow(() -> new RuntimeException()"수정한 내용이 없습니다");
-//
-//        }
-//    }
+
+    //Todo 수정
+    public CreateTodoResDto updateTodo(Integer id, String email, TodoReqDto todoReqDto){
+
+        //유저 조회
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("해당 유저가 없습니다"));
+
+        //수정할 Todo 조회
+        Todo todo = todoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("수정할 Todo가 없습니다"));
+
+
+    }
 
     //Todo 삭제
     public void deleteTodo(Integer id ,String email){
+
+        //유저 조회
         User user = userRepository.findByEmail(email)
                         .orElseThrow(() -> new RuntimeException("해당 유저가 없습니다."));
+
+        //삭제할 Todo 조회
         Todo todo = todoRepository.findById(id)
                         .orElseThrow(() -> new RuntimeException("삭제할 Todo가 없습니다."));
+
         if (!todo.getWriter().equals(user)){
             throw new RuntimeException("본인이 작성한 Todo만 삭제할 수 있습니다");
         }

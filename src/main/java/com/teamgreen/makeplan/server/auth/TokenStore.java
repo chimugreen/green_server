@@ -25,12 +25,6 @@ public class TokenStore {
         return token.equals(tokenMap.get(email));
     }
 
-    public String getEmailByToken(String token) {
-        return tokenMap.entrySet().stream()
-                .filter(entry -> entry.getValue().equals(token))
-                .map(Map.Entry::getKey)
-                .findFirst()
-                .orElse(null);
-    }
+
 
 }
