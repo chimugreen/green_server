@@ -59,6 +59,12 @@ public class TodoController {
         }
 
         // Todo 수정
+        @PutMapping("/{id}")
+        public CreateTodoResDto updateTodo(@PathVariable Integer id, @RequestBody TodoReqDto todoReqDto, @RequestHeader("Authorization") String authorizationHeader){
+                String token = authorizationHeader.replace("Bearer ","").trim();
+                String email = jwtTokenProvider.extractEmail(token);
 
+                return todoService.updateTodo(id, email, todoReqDto);
+        }
 
 }

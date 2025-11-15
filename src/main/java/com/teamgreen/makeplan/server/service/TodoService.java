@@ -59,7 +59,23 @@ public class TodoService {
         Todo todo = todoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("수정할 Todo가 없습니다"));
 
+        //본인이 작성한 Todo인지 확인
+        if (!todo.getWriter().equals(user)){
+            throw new RuntimeException("본인이 작성한 Todo만 수정 가능합니다");
+        }
 
+        //수정 반영
+        if (todoReqDto.getContent() != null){
+            todo.setContent(todoReqDto.getContent());
+        }
+        todo.setDone(todoReqDto.isDone());
+        todo.setTargetDate(todoReqDto.getTargetDate());
+
+        //db저장
+        todoRepository.save(todo);
+
+        //업데이트 결과 변환
+        return CreateTodoResDto.fromEntity(todo);
     }
 
     //Todo 삭제
