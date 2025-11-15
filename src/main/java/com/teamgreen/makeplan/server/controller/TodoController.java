@@ -29,7 +29,6 @@ public class TodoController {
 //                String email = tokenStore.getEmailByToken(accessToken);
 
                 String token = authorizationHeader.replace("Bearer ","").trim();
-
                 String email = jwtTokenProvider.extractEmail(token);
 
                 return todoService.createTodo(todoReqDto.getContent(), email);
