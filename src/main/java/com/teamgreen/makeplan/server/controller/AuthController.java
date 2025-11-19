@@ -41,7 +41,7 @@ public class AuthController {
      */
     @PostMapping("/signin")
     public SignInResDto signIn(@Valid @RequestBody SignInReqDto dto) {
-        String accessToken = userService.login(dto.getEmail(), dto.getPassword());
-        return new SignInResDto(accessToken);
+        UserService.TokenPair pair = userService.login(dto.getEmail(), dto.getPassword());
+        return new SignInResDto(pair.id(), pair.accessToken());
     }
 }

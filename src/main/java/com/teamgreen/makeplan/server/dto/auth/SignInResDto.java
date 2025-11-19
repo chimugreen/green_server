@@ -6,5 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class SignInResDto {
+    private final Integer userId;
     private final String accessToken;
 }
