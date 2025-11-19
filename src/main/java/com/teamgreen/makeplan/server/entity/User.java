@@ -45,4 +45,9 @@ public class User {
     public void preUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
+
+    public String getName() {
+        return (name == null || name.isBlank()) ? "새로운 사용자" : name;
+    }
+
 }

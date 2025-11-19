@@ -14,19 +14,13 @@ public class JwtTokenProvider {
     private static final String SECRET_KEY = "ThisIsASecretKeyThatMustBeAtLeast32CharactersLong!";
     private static final Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
 
-    // Access: 30minutes, Refresh: 2weeks
-    private static final long ACCESS_TOKEN_VALIDITY = 1000L * 60 * 30;
-
-
     public String buildJwtToken(Integer userId, String email) {
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + ACCESS_TOKEN_VALIDITY);
 
         return Jwts.builder()
                    .setSubject(email)
                    .claim("userId", userId)
                    .setIssuedAt(now)
-                   .setExpiration(expiryDate)
                    .signWith(key, SignatureAlgorithm.HS256)
                    .compact();
     }
