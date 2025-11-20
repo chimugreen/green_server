@@ -18,6 +18,7 @@ public class CreateTodoResDto {
     private final String content;
     private boolean isDone;
     private LocalDateTime targetDate;
+    private LocalDateTime createDate;
 
     //entity 를 dto로 변환하기 메소드 보디(builder) 사용버전
     public static CreateTodoResDto fromEntity(Todo todo){
@@ -26,6 +27,7 @@ public class CreateTodoResDto {
                 .content(todo.getContent())
                 .isDone(todo.isDone())
                 .targetDate(todo.getTargetDate())
+                .createDate(todo.getCreateDate())
                 .build();
     }
 

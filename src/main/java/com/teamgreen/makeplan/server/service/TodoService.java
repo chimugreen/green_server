@@ -2,6 +2,8 @@ package com.teamgreen.makeplan.server.service;
 
 import com.teamgreen.makeplan.server.dto.todo.CreateTodoResDto;
 import com.teamgreen.makeplan.server.dto.todo.TodoReqDto;
+import com.teamgreen.makeplan.server.dto.todo.TodoResDto;
+import com.teamgreen.makeplan.server.dto.todo.UpdateTodoReqDto;
 import com.teamgreen.makeplan.server.entity.Todo;
 import com.teamgreen.makeplan.server.entity.User;
 import com.teamgreen.makeplan.server.error.AuthError;
@@ -12,6 +14,7 @@ import com.teamgreen.makeplan.server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -31,6 +34,7 @@ public class TodoService {
         Todo todo = Todo.builder()
                 .content(content)
                 .writer(user)
+                .targetDate(LocalDateTime.now())
                 .build();
 
         todoRepository.save(todo);
@@ -40,19 +44,19 @@ public class TodoService {
 
 
     // Todo 목록 조회
-    public List<CreateTodoResDto> getTodosByUserId(Integer userId) {
+    public List<TodoResDto> getTodosByUserId(Integer userId) {
 
         //작성자(userId) 기준으로 Todo 목록 조회
         List<Todo> todos = todoRepository.findByWriterId(userId);
 
         return todos.stream()
-                .map(CreateTodoResDto::fromEntity)
+                .map(TodoResDto::fromEntity) //entity -> dto 변환
                 .toList();
     }
 
 
     // Todo 수정
-    public CreateTodoResDto updateTodo(Integer id, Integer userId, TodoReqDto dto) {
+    public CreateTodoResDto updateTodo(Integer id, Integer userId, UpdateTodoReqDto updateTodoReqDto) {
 
         //에러 처리: 잘못된 유저 정보일 경우 AuthError
         User user = userRepository.findById(userId)
@@ -62,17 +66,18 @@ public class TodoService {
         Todo todo = todoRepository.findById(id)
                 .orElseThrow(() -> new RestApiException(TodoError.TODO_NOT_FOUND));
 
-        //에러 처리 : 본인이 작성한 Todo가 아닐 경우 권한 없음
-        if (!todo.getWriter().equals(user)) {
-            throw new RestApiException(TodoError.TODO_FORBIDDEN);
-        }
 
         // 필드 업데이트
-        if (dto.getContent() != null) {
-            todo.setContent(dto.getContent());
+
+        if (updateTodoReqDto.getContent() != null) {
+            todo.setContent(updateTodoReqDto.getContent());
         }
-        todo.setDone(dto.isDone());
-        todo.setTargetDate(dto.getTargetDate());
+        if (updateTodoReqDto.getIsDone() != null) {
+            todo.setDone(updateTodoReqDto.getIsDone());
+        }
+        if (updateTodoReqDto.getTargetDate() != null) {
+            todo.setTargetDate(updateTodoReqDto.getTargetDate());
+        }
 
         todoRepository.save(todo);
 
@@ -90,11 +95,6 @@ public class TodoService {
         //삭제할 Todo 존재 여부 확인
         Todo todo = todoRepository.findById(id)
                 .orElseThrow(() -> new RestApiException(TodoError.TODO_NOT_FOUND));
-
-        //작성자 본인이 아닐 경우 삭제 불가
-        if (!todo.getWriter().equals(user)) {
-            throw new RestApiException(TodoError.TODO_FORBIDDEN);
-        }
 
         todoRepository.delete(todo);
     }

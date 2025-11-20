@@ -7,6 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
@@ -16,6 +20,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 public class Todo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,11 +32,15 @@ public class Todo {
     @Column(nullable = false)
     private String content; // todo 내용
 
+    @CreatedDate
+    private LocalDateTime createDate; //todo 생성날짜
+
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime targetDate; //언제까지 완료해야되는지
 
     @ManyToOne(fetch = FetchType.LAZY) //유저 삭제시 todo도 삭제
     @JoinColumn(name = "writer_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User writer;
 
 

@@ -19,7 +19,7 @@ public class TodoReqDto {
 
     private LocalDateTime targetDate;
 
-
+    //dto - entity로 변환
     public Todo toEntity(User writer){
         return Todo.builder()
                 .content(this.content)
