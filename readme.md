@@ -75,11 +75,11 @@
 
 ## ⚙️ 사용 기술 스택
 
-| 영역 | 기술 |
-|------|------|
-| **백엔드** | Spring Boot, AWS EC2, SQL, MongoDB |
-| **프론트엔드** | React, TypeScript |
-| **기타 도구** | GitHub, Postman, Figma |
+| 영역 | 기술                                           |
+|------|----------------------------------------------|
+| **백엔드** | Spring Boot, AWS EC2, MySQL, MongoDB, AWS S3 |
+| **프론트엔드** | React, TypeScript                            |
+| **기타 도구** | GitHub, Postman, Figma                       |
 
 ---
 
