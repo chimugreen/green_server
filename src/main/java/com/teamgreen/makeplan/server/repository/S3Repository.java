@@ -28,7 +28,6 @@ public class S3Repository {
                 .bucket(bucket)
                 .key(fileName)
                 .contentType(file.getContentType())
-                .acl("public-read") // S3버킷이 퍼블릭 read 접근을 허용하도록
                 .build();
 
         s3Client.putObject(
