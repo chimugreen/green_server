@@ -16,5 +16,4 @@ public interface TodoRepository extends JpaRepository<Todo, Integer> {
     List<Todo> findByWriterEmail(String email);
 
 
-
 }
