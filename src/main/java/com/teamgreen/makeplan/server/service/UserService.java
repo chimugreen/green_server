@@ -60,7 +60,7 @@ public class UserService {
     }
 
     @Transactional
-    public String login(String email, String password) {
+    public TokenPair login(String email, String password) {
 
         User savedUser = getUserFromSql(email);
 
@@ -71,8 +71,9 @@ public class UserService {
 
         String token = jwtTokenProvider.buildJwtToken(savedUser.getId(), savedUser.getEmail());
         tokenStore.save(savedUser.getEmail(), token);
-        return token;
+        return new TokenPair(savedUser.getId(), token);
     }
+    public record TokenPair(Integer id, String accessToken) {}
 
 
     /**
