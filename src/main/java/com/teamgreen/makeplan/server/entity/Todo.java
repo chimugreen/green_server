@@ -30,9 +30,9 @@ public class Todo {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime targetDate; //언제까지 완료해야되는지
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST) // todo조회시 user도 함께 가져옴, todo저장시 user도 같이 저장
-    @JoinColumn(name = "writer_id", nullable = false, referencedColumnName = "id")
-    private User writer; //작성자
+    @ManyToOne(fetch = FetchType.LAZY) //유저 삭제시 todo도 삭제
+    @JoinColumn(name = "writer_id", nullable = false)
+    private User writer;
 
 
 }

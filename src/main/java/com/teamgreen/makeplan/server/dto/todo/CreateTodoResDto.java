@@ -19,7 +19,7 @@ public class CreateTodoResDto {
     private boolean isDone;
     private LocalDateTime targetDate;
 
-    //entity 를 dto로 변환하기 메소드 보디(bulder) 사용버전
+    //entity 를 dto로 변환하기 메소드 보디(builder) 사용버전
     public static CreateTodoResDto fromEntity(Todo todo){
         return CreateTodoResDto.builder()
                 .id(todo.getId())

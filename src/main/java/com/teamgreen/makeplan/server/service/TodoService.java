@@ -4,6 +4,9 @@ import com.teamgreen.makeplan.server.dto.todo.CreateTodoResDto;
 import com.teamgreen.makeplan.server.dto.todo.TodoReqDto;
 import com.teamgreen.makeplan.server.entity.Todo;
 import com.teamgreen.makeplan.server.entity.User;
+import com.teamgreen.makeplan.server.error.AuthError;
+import com.teamgreen.makeplan.server.error.RestApiException;
+import com.teamgreen.makeplan.server.error.TodoError;
 import com.teamgreen.makeplan.server.repository.TodoRepository;
 import com.teamgreen.makeplan.server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,14 +18,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TodoService {
 
-    private final TodoRepository todoRepository; //db 접근 담당
+    private final TodoRepository todoRepository; // DB 접근 담당
     private final UserRepository userRepository;
 
-    //Todo 생성
-    public CreateTodoResDto createTodo(String content, String email) {
+    // Todo 생성
+    public CreateTodoResDto createTodo(String content, Integer userId) {
 
-        User user = userRepository.findByEmail(email)
-                .orElseThrow();
+        //에러 처리 : 존재하지 않는 유저일 경우 AuthError 반환
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RestApiException(AuthError.INVALID_USER_INFO));
 
         Todo todo = Todo.builder()
                 .content(content)
@@ -34,68 +38,65 @@ public class TodoService {
         return CreateTodoResDto.fromEntity(todo);
     }
 
-    //Todo 목록 조회
-    public List<CreateTodoResDto> getTodosByEmail(String email) { //Todo 목록을 DTO형태로 반환
-        // DB에서 email로 User를 조회 (없으면 예외 발생)
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("해당 유저가 없습니다"));
-        // 이메일 기반으로 Todo 목록 조회
-        List<Todo> todos = todoRepository.findByWriterEmail(email);
-        // 엔티티 리스트 -> DTO 리스트로 변환
+
+    // Todo 목록 조회
+    public List<CreateTodoResDto> getTodosByUserId(Integer userId) {
+
+        //작성자(userId) 기준으로 Todo 목록 조회
+        List<Todo> todos = todoRepository.findByWriterId(userId);
+
         return todos.stream()
                 .map(CreateTodoResDto::fromEntity)
                 .toList();
     }
 
 
-    //Todo 수정
-    public CreateTodoResDto updateTodo(Integer id, String email, TodoReqDto todoReqDto){
+    // Todo 수정
+    public CreateTodoResDto updateTodo(Integer id, Integer userId, TodoReqDto dto) {
 
-        //유저 조회
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("해당 유저가 없습니다"));
+        //에러 처리: 잘못된 유저 정보일 경우 AuthError
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RestApiException(AuthError.INVALID_USER_INFO));
 
-        //수정할 Todo 조회
+        //에러 처리: 존재하지 않는 Todo일 경우 TodoError 반환
         Todo todo = todoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("수정할 Todo가 없습니다"));
+                .orElseThrow(() -> new RestApiException(TodoError.TODO_NOT_FOUND));
 
-        //본인이 작성한 Todo인지 확인
-        if (!todo.getWriter().equals(user)){
-            throw new RuntimeException("본인이 작성한 Todo만 수정 가능합니다");
+        //에러 처리 : 본인이 작성한 Todo가 아닐 경우 권한 없음
+        if (!todo.getWriter().equals(user)) {
+            throw new RestApiException(TodoError.TODO_FORBIDDEN);
         }
 
-        //수정 반영
-        if (todoReqDto.getContent() != null){
-            todo.setContent(todoReqDto.getContent());
+        // 필드 업데이트
+        if (dto.getContent() != null) {
+            todo.setContent(dto.getContent());
         }
-        todo.setDone(todoReqDto.isDone());
-        todo.setTargetDate(todoReqDto.getTargetDate());
+        todo.setDone(dto.isDone());
+        todo.setTargetDate(dto.getTargetDate());
 
-        //db저장
         todoRepository.save(todo);
 
-        //업데이트 결과 변환
         return CreateTodoResDto.fromEntity(todo);
     }
 
-    //Todo 삭제
-    public void deleteTodo(Integer id ,String email){
 
-        //유저 조회
-        User user = userRepository.findByEmail(email)
-                        .orElseThrow(() -> new RuntimeException("해당 유저가 없습니다."));
+    // Todo 삭제
+    public void deleteTodo(Integer id, Integer userId) {
 
-        //삭제할 Todo 조회
+        //유저 검증
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RestApiException(AuthError.INVALID_USER_INFO));
+
+        //삭제할 Todo 존재 여부 확인
         Todo todo = todoRepository.findById(id)
-                        .orElseThrow(() -> new RuntimeException("삭제할 Todo가 없습니다."));
+                .orElseThrow(() -> new RestApiException(TodoError.TODO_NOT_FOUND));
 
-        if (!todo.getWriter().equals(user)){
-            throw new RuntimeException("본인이 작성한 Todo만 삭제할 수 있습니다");
+        //작성자 본인이 아닐 경우 삭제 불가
+        if (!todo.getWriter().equals(user)) {
+            throw new RestApiException(TodoError.TODO_FORBIDDEN);
         }
 
-        todoRepository.deleteById(id); //위 로직 통과 후 삭제 완료
+        todoRepository.delete(todo);
     }
-
-
 
 }
