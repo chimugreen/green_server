@@ -57,7 +57,7 @@ public class UserController extends BaseController {
                 .build();
     }
 
-    @PostMapping("/nickname")
+    @PostMapping("/name")
     public void editNickName(@Valid @RequestBody EditNameReqDto dto) {
         UserPrincipal currentUser = getCurrentUser();
         userService.editName(currentUser.getUserId(), dto.getName());
