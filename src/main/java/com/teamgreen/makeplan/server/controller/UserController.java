@@ -2,9 +2,9 @@ package com.teamgreen.makeplan.server.controller;
 
 import com.teamgreen.makeplan.server.auth.UserPrincipal;
 import com.teamgreen.makeplan.server.base.BaseController;
+import com.teamgreen.makeplan.server.dto.user.EditNameReqDto;
 import com.teamgreen.makeplan.server.dto.user.follow.FollowListResDto;
 import com.teamgreen.makeplan.server.dto.user.follow.FollowReqDto;
-import com.teamgreen.makeplan.server.dto.user.follow.FollowUserDto;
 import com.teamgreen.makeplan.server.dto.user.follow.UnfollowReqDto;
 
 import com.teamgreen.makeplan.server.dto.user.UserProfileResDto;
@@ -12,8 +12,6 @@ import com.teamgreen.makeplan.server.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -57,5 +55,12 @@ public class UserController extends BaseController {
                 .builder()
                 .list(userService.followings(userId))
                 .build();
+    }
+
+    @PostMapping("/nickname")
+    public void editNickName(@Valid @RequestBody EditNameReqDto dto) {
+        UserPrincipal currentUser = getCurrentUser();
+        userService.editName(currentUser.getUserId(), dto.getName());
+        return;
     }
 }

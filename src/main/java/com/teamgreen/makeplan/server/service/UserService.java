@@ -159,6 +159,13 @@ public class UserService {
                               });
     }
 
+    public void editName(Integer userId, String name) {
+        User user = userRepository.findById(userId)
+                                  .orElseThrow();
+        user.setName(name);
+        userRepository.save(user);
+    }
+
     public List<Integer> getFollowing(Integer userId) {
         return userDocumentRepository.findById(userId)
                                      .map(UserDocument::getFollowing)
