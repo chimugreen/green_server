@@ -8,6 +8,7 @@ import com.teamgreen.makeplan.server.entity.User;
 import com.teamgreen.makeplan.server.entity.document.user.UserDocument;
 import com.teamgreen.makeplan.server.error.AuthError;
 import com.teamgreen.makeplan.server.error.RestApiException;
+import com.teamgreen.makeplan.server.repository.PostRepository;
 import com.teamgreen.makeplan.server.repository.UserDocumentRepository;
 import com.teamgreen.makeplan.server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class UserService {
     private final UserDocumentRepository userDocumentRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final TokenStore tokenStore;
+    private final PostRepository postRepository;
 
     public UserProfileResDto getProfile(Integer requesterId, Integer userId) {
         User user = getUserFromSql(userId);
@@ -36,10 +38,12 @@ public class UserService {
         boolean isFollowing = userDocument.getFollowers()
                                           .contains(requesterId);
 
+        int postCnt = postRepository.countByUserId(userId);
+
         return new UserProfileResDto(
                 user.getName(),
                 user.getEmail(),
-                0,
+                postCnt,
                 userDocument.getFollowers()
                             .size(),
                 userDocument.getFollowing()
