@@ -2,9 +2,12 @@ package com.teamgreen.makeplan.server.controller;
 
 import com.teamgreen.makeplan.server.auth.UserPrincipal;
 import com.teamgreen.makeplan.server.base.BaseController;
+import com.teamgreen.makeplan.server.dto.post.GetPostListReqDto;
+import com.teamgreen.makeplan.server.dto.post.GetPostListResDto;
 import com.teamgreen.makeplan.server.dto.post.PostCreateReqDto;
 import com.teamgreen.makeplan.server.dto.post.PostCreateResDto;
 import com.teamgreen.makeplan.server.service.PostService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -27,5 +30,10 @@ public class PostController extends BaseController {
         );
 
         return new PostCreateResDto(postId);
+    }
+
+    @PostMapping("/user")
+    public GetPostListResDto getPostList(@Valid @RequestBody GetPostListReqDto dto) {
+        return postService.getPostList(dto.getPage(), dto.getSize(), dto.getUserId());
     }
 }
