@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Builder
-//response 응답
+//response 응답 (Todo 생성 응답)
 public class CreateTodoResDto {
     private final Integer id;
     private final String content;
@@ -20,7 +20,7 @@ public class CreateTodoResDto {
     private LocalDateTime targetDate;
     private LocalDateTime createDate;
 
-    //entity 를 dto로 변환하기 메소드 보디(builder) 사용버전
+    //entity 를 dto로 변환하기 메소드 (builder) 사용버전
     public static CreateTodoResDto fromEntity(Todo todo){
         return CreateTodoResDto.builder()
                 .id(todo.getId())

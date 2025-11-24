@@ -1,13 +1,15 @@
 package com.teamgreen.makeplan.server.dto.todo;
 
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
-import java.time.LocalDateTime;
 
 @Data
+// Todo 수정 요청
 public class UpdateTodoReqDto {
+    @NotEmpty
     private String content;
+    @NotEmpty
     private Boolean isDone;
-    private LocalDateTime targetDate;
 }

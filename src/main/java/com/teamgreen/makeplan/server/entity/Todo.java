@@ -12,6 +12,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -35,7 +36,9 @@ public class Todo {
     @CreatedDate
     private LocalDateTime createDate; //todo 생성날짜
 
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @Column(nullable = false)
+    private LocalDate schedule; //어느날짜의 todo인지
+
     private LocalDateTime targetDate; //언제까지 완료해야되는지
 
     @ManyToOne(fetch = FetchType.LAZY) //유저 삭제시 todo도 삭제

@@ -2,7 +2,7 @@ package com.teamgreen.makeplan.server.controller;
 
 import com.teamgreen.makeplan.server.auth.UserPrincipal;
 import com.teamgreen.makeplan.server.base.BaseController;
-import com.teamgreen.makeplan.server.dto.todo.TodoReqDto;
+import com.teamgreen.makeplan.server.dto.todo.CreateTodoReqDto;
 import com.teamgreen.makeplan.server.dto.todo.CreateTodoResDto;
 import com.teamgreen.makeplan.server.dto.todo.TodoResDto;
 import com.teamgreen.makeplan.server.dto.todo.UpdateTodoReqDto;
@@ -23,12 +23,13 @@ public class TodoController extends BaseController {
 
         // Todo 생성
         @PostMapping
-        public CreateTodoResDto createTodo(@Valid @RequestBody TodoReqDto todoReqDto) {
+        public CreateTodoResDto createTodo(@Valid @RequestBody CreateTodoReqDto createTodoReqDto) {
 
                 UserPrincipal currentUser = getCurrentUser();
                 Integer userId = currentUser.getUserId();
 
-                return todoService.createTodo(todoReqDto.getContent(), userId);
+
+                return todoService.createTodo(createTodoReqDto, userId);
         }
 
         // Todo 목록 조회 (로그인한 유저만)

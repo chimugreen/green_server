@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-public class TodoResDto { //목록조회용 dto
+public class TodoResDto { //Todo 목록 조회 응답
 
     private Integer id;
     private String content;
