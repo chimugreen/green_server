@@ -32,13 +32,8 @@ public class Todo {
     @Column(nullable = false)
     private String content; // todo 내용
 
-    @CreatedDate
-    private LocalDateTime createDate; //todo 생성날짜
-
     @Column(nullable = false)
     private LocalDate schedule; //어느날짜의 todo인지
-
-    private LocalDateTime targetDate; //언제까지 완료해야되는지
 
     @ManyToOne(fetch = FetchType.LAZY) //지연로딩(LAZY) 필요할때만 User데이터 조회 @ManToOne은 무조건 LAZY
     @JoinColumn(name = "writer_id", nullable = false)//유저 삭제시 todo도 삭제

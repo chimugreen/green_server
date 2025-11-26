@@ -19,9 +19,6 @@ public class CreateTodoReqDto {
     @NotEmpty(message = "할 일을 넣으세요")
     private String content;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime targetDate;
-
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate schedule;
 
@@ -29,7 +26,6 @@ public class CreateTodoReqDto {
     public Todo toEntity(User writer){
         return Todo.builder()
                 .content(this.content)
-                .targetDate(this.targetDate)
                 .writer(writer)
                 .isDone(false)
                 .build();

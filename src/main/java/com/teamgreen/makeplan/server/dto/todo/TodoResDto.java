@@ -13,8 +13,6 @@ public class TodoResDto { //Todo 목록 조회 응답
     private Integer id;
     private String content;
     private boolean isDone;
-    private LocalDateTime createDate;
-    private LocalDateTime targetDate;
 
     //entity -> dto로 변환
     public static TodoResDto fromEntity(Todo todo) {
@@ -22,8 +20,6 @@ public class TodoResDto { //Todo 목록 조회 응답
                 .id(todo.getId())
                 .content(todo.getContent())
                 .isDone(todo.isDone())
-                .createDate(todo.getCreateDate())
-                .targetDate(todo.getTargetDate())
                 .build();
     }
 }

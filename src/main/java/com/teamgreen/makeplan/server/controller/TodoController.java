@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/todos")
 @RequiredArgsConstructor
-
+@CrossOrigin(origins = "http://localhost:5173")
 public class TodoController extends BaseController {
 
         private final TodoService todoService;

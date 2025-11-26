@@ -33,7 +33,6 @@ public class TodoService {
         Todo todo = Todo.builder()
                 .content(createTodoReqDto.getContent()) //todo 내용
                 .writer(user) //작성자
-                .targetDate(createTodoReqDto.getTargetDate()) //todo 마감기한
                 .schedule(createTodoReqDto.getSchedule()) //어느 날짜의 todo인지
                 .build();
 
