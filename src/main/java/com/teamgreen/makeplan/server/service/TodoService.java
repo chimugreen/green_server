@@ -62,6 +62,7 @@ public class TodoService {
         Todo todo = todoRepository.findById(id)
                 .orElseThrow(() -> new RestApiException(TodoError.TODO_NOT_FOUND));
 
+        todo.setContent(updateTodoReqDto.getContent());
         todo.setDone(updateTodoReqDto.getIsDone());
 
         todoRepository.save(todo);

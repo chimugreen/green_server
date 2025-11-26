@@ -2,6 +2,7 @@ package com.teamgreen.makeplan.server.dto.todo;
 
 
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 
@@ -10,6 +11,6 @@ import lombok.Data;
 public class UpdateTodoReqDto {
     @NotEmpty
     private String content;
-    @NotEmpty
+    @NotNull
     private Boolean isDone;
 }

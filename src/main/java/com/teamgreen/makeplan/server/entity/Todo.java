@@ -1,7 +1,6 @@
 package com.teamgreen.makeplan.server.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,8 +40,8 @@ public class Todo {
 
     private LocalDateTime targetDate; //언제까지 완료해야되는지
 
-    @ManyToOne(fetch = FetchType.LAZY) //유저 삭제시 todo도 삭제
-    @JoinColumn(name = "writer_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY) //지연로딩(LAZY) 필요할때만 User데이터 조회 @ManToOne은 무조건 LAZY
+    @JoinColumn(name = "writer_id", nullable = false)//유저 삭제시 todo도 삭제
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User writer;
 
