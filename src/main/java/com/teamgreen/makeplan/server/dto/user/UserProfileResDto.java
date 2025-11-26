@@ -8,7 +8,7 @@ import lombok.Data;
 public class UserProfileResDto {
     private String name;
     private String email;
-    private String profileImageUr;
+    private String profileImageUrl;
     private Integer postCount;
     private Integer followerCount;
     private Integer followingCount;
