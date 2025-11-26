@@ -67,14 +67,20 @@ public class PostService {
 
         List<PostResDto> postList = result.getContent()
                                           .stream()
-                                          .map(post -> PostResDto.builder()
-                                                                 .createdAt(post.getCreatedAt())
-                                                                 .id(post.getId())
-                                                                 .userId(post.getUser()
-                                                                             .getId())
-                                                                 .content(post.getContent())
-                                                                 .imageUrl(post.getImageUrl())
-                                                                 .build()
+                                          .map(post -> {
+
+                                                   User user = post.getUser();
+
+                                                   return PostResDto.builder()
+                                                                    .id(post.getId())
+                                                                    .content(post.getContent())
+                                                                    .createdAt(post.getCreatedAt())
+                                                                    .imageUrl(post.getImageUrl())
+                                                                    .userId(user.getId())
+                                                                    .username(user.getName())
+                                                                    .profileImageUrl(user.getProfileImageUrl())
+                                                                    .build();
+                                               }
                                           )
                                           .toList();
 

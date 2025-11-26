@@ -13,4 +13,8 @@ public class PostResDto {
     private LocalDateTime createdAt;
     private String imageUrl;
     private Integer userId;
+    private String username;
+    private String profileImageUrl;
+    private Integer likesCnt = 0;
+    private Integer commentsCnt = 0;
 }
