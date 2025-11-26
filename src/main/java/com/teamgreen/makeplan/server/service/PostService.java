@@ -1,5 +1,8 @@
 package com.teamgreen.makeplan.server.service;
 
+import com.teamgreen.makeplan.server.dto.post.GetPostListResDto;
+import com.teamgreen.makeplan.server.dto.post.PagenationDto;
+import com.teamgreen.makeplan.server.dto.post.PostResDto;
 import com.teamgreen.makeplan.server.entity.Post;
 import com.teamgreen.makeplan.server.entity.User;
 import com.teamgreen.makeplan.server.error.AuthError;
@@ -9,11 +12,16 @@ import com.teamgreen.makeplan.server.repository.PostRepository;
 import com.teamgreen.makeplan.server.repository.S3Repository;
 import com.teamgreen.makeplan.server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -46,5 +54,42 @@ public class PostService {
         postRepository.save(post);
 
         return post.getId();
+    }
+
+    @Transactional
+    public GetPostListResDto getPostList(int page, int size, int userId) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+
+        Page<Post> result;
+
+        result = postRepository.findAllByUserIdOrderByCreatedAtDesc(userId, pageable);
+
+        List<PostResDto> postList = result.getContent()
+                                          .stream()
+                                          .map(post -> PostResDto.builder()
+                                                                 .createdAt(post.getCreatedAt())
+                                                                 .id(post.getId())
+                                                                 .userId(post.getUser()
+                                                                             .getId())
+                                                                 .content(post.getContent())
+                                                                 .imageUrl(post.getImageUrl())
+                                                                 .build()
+                                          )
+                                          .toList();
+
+        PagenationDto pagination = PagenationDto.builder()
+                                                .page(result.getNumber())
+                                                .size(result.getSize())
+                                                .totalElements((int) result.getTotalElements())
+                                                .totalPages(result.getTotalPages())
+                                                .hasNext(result.hasNext())
+
+                                                .build();
+
+        return GetPostListResDto.builder()
+                                .posts(postList)
+                                .pagenation(pagination)
+                                .build();
     }
 }

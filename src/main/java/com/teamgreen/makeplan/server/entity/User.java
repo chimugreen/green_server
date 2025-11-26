@@ -50,4 +50,10 @@ public class User {
         return (name == null || name.isBlank()) ? "새로운 사용자" : name;
     }
 
+    public String getProfileImageUrl() {
+        return (profileImageUrl == null || profileImageUrl.isBlank()) ? "https://green-post-images.s3.amazonaws" +
+                ".com/posts/e4db8837-212c-48f2-b714-c0979ed5d1f6_589119389_1149866060634771_6555316126677968055_n" +
+                ".png":profileImageUrl;
+    }
+
 }

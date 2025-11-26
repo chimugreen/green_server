@@ -1,7 +1,11 @@
 package com.teamgreen.makeplan.server.repository;
 
 import com.teamgreen.makeplan.server.entity.Post;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
+    Page<Post> findAllByUserIdOrderByCreatedAtDesc(Integer userId, Pageable pageable);
+    int countByUserId(Integer userId);
 }
