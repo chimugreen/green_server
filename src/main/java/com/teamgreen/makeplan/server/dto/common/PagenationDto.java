@@ -1,4 +1,4 @@
-package com.teamgreen.makeplan.server.dto.post;
+package com.teamgreen.makeplan.server.dto.common;
 
 import lombok.Builder;
 import lombok.Data;

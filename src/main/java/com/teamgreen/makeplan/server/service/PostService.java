@@ -1,7 +1,7 @@
 package com.teamgreen.makeplan.server.service;
 
 import com.teamgreen.makeplan.server.dto.post.GetPostListResDto;
-import com.teamgreen.makeplan.server.dto.post.PagenationDto;
+import com.teamgreen.makeplan.server.dto.common.PagenationDto;
 import com.teamgreen.makeplan.server.dto.post.PostResDto;
 import com.teamgreen.makeplan.server.entity.Post;
 import com.teamgreen.makeplan.server.entity.User;
@@ -20,9 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
