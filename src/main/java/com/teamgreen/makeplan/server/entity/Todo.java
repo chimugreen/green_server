@@ -1,6 +1,7 @@
 package com.teamgreen.makeplan.server.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,7 +34,7 @@ public class Todo {
     private String content; // todo 내용
 
     @Column(nullable = false)
-    private LocalDate schedule; //어느날짜의 todo인지
+    private LocalDateTime schedule; //어느날짜의 todo인지
 
     @ManyToOne(fetch = FetchType.LAZY) //지연로딩(LAZY) 필요할때만 User데이터 조회 @ManToOne은 무조건 LAZY
     @JoinColumn(name = "writer_id", nullable = false)//유저 삭제시 todo도 삭제

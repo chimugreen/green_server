@@ -4,6 +4,7 @@ import com.teamgreen.makeplan.server.entity.Todo;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -12,6 +13,7 @@ public class TodoResDto { //Todo 목록 조회 응답
 
     private Integer id;
     private String content;
+    private LocalDateTime schedule;
     private boolean isDone;
 
     //entity -> dto로 변환
@@ -19,6 +21,7 @@ public class TodoResDto { //Todo 목록 조회 응답
         return TodoResDto.builder()
                 .id(todo.getId())
                 .content(todo.getContent())
+                .schedule(todo.getSchedule())
                 .isDone(todo.isDone())
                 .build();
     }

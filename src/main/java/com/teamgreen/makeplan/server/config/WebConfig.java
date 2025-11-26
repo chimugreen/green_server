@@ -21,6 +21,22 @@ public class WebConfig {
         config.setAllowedHeaders(List.of("*"));
         config.setExposedHeaders(List.of("*"));
 
+
+
+        // 프론트 주소 명시적으로 허용
+        config.setAllowedOrigins(List.of("http://localhost:5173"));
+
+        // 인증 포함 요청 허용
+        config.setAllowCredentials(true);
+
+        // 메서드 허용
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+
+        // 모든 헤더 허용
+        config.setAllowedHeaders(List.of("*"));
+
+        // 클라이언트가 접근 가능한 헤더
+        config.setExposedHeaders(List.of("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
 
