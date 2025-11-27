@@ -1,6 +1,6 @@
 package com.teamgreen.makeplan.server.dto.post;
 
-import com.teamgreen.makeplan.server.entity.Post;
+import com.teamgreen.makeplan.server.dto.common.PagenationDto;
 import lombok.Builder;
 import lombok.Data;
 

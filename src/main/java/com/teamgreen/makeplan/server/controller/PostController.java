@@ -2,6 +2,7 @@ package com.teamgreen.makeplan.server.controller;
 
 import com.teamgreen.makeplan.server.auth.UserPrincipal;
 import com.teamgreen.makeplan.server.base.BaseController;
+import com.teamgreen.makeplan.server.dto.comment.CreateCommentReqDto;
 import com.teamgreen.makeplan.server.dto.post.GetPostListReqDto;
 import com.teamgreen.makeplan.server.dto.post.GetPostListResDto;
 import com.teamgreen.makeplan.server.dto.post.PostCreateReqDto;
