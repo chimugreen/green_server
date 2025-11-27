@@ -20,6 +20,7 @@ public class CreateTodoResDto {
 
     private final String content;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime schedule;
 
     private boolean isDone;
