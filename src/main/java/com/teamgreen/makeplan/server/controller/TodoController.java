@@ -23,7 +23,7 @@ public class TodoController extends BaseController {
 
         // Todo 생성
         @PostMapping
-        public CreateTodoResDto createTodo(@Valid @RequestBody CreateTodoReqDto createTodoReqDto) {
+        public CreateTodoResDto createTodo(@Valid @RequestBody CreateTodoReqDto createTodoReqDto) { //res 반환 req 로 받음
 
                 UserPrincipal currentUser = getCurrentUser();
                 Integer userId = currentUser.getUserId();
