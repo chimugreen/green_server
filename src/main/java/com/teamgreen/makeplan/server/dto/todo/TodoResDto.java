@@ -1,5 +1,6 @@
 package com.teamgreen.makeplan.server.dto.todo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.teamgreen.makeplan.server.entity.Todo;
 import lombok.Builder;
 import lombok.Data;
@@ -12,8 +13,12 @@ import java.time.LocalDateTime;
 public class TodoResDto { //Todo 목록 조회 응답
 
     private Integer id;
+
     private String content;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime schedule;
+
     private boolean isDone;
 
     //entity -> dto로 변환

@@ -5,6 +5,7 @@ import com.teamgreen.makeplan.server.entity.Todo;
 import com.teamgreen.makeplan.server.entity.User;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,6 +20,7 @@ public class CreateTodoReqDto {
     @NotEmpty(message = "할 일을 넣으세요")
     private String content;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime schedule;
 
     //dto - entity로 변환

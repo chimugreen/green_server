@@ -43,6 +43,7 @@ public class UserService {
         return new UserProfileResDto(
                 user.getName(),
                 user.getEmail(),
+                user.getProfileImageUrl(),
                 postCnt,
                 userDocument.getFollowers()
                             .size(),
